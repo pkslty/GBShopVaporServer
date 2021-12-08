@@ -5,14 +5,14 @@ func routes(_ app: Application) throws {
     app.get { req -> String in
         
         let databaseConfig: PostgresConfiguration
-        if let url = Environment.get("DATABASE_URL") {
+         if let url = Environment.get("DATABASE_URL") {
           // configuring database
-          databaseConfig = PostgresConfiguration(url: url)!
+             databaseConfig = PostgresConfiguration(url: url)!
         } else {
           // ...
         }
         
-        return "Database configured!"
+        return Environment.get("DATABASE_URL")!
     }
 
     app.get("hello") { req -> String in
