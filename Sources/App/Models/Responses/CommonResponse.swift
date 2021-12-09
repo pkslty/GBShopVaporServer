@@ -7,7 +7,7 @@
 
 import Vapor
 
-struct UserResponse: Content {
+struct CommonResponse: Content {
     var result: Int
     var userMessage: String?
     var errorMessage: String?

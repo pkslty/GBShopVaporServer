@@ -16,7 +16,10 @@ func routes(_ app: Application) throws {
         return "Hello, world!"
     }
     
-    let controller = UserController()
-    app.post("register", use: controller.register)
-    app.post("changeUserData", use: controller.changeUserData)
+    let userController = UserController()
+    let authController = AuthController()
+    app.post("register", use: userController.register)
+    app.post("changeUserData", use: userController.changeUserData)
+    app.post("login", use: authController.login)
+    app.post("logout", use: authController.logout)
 }
