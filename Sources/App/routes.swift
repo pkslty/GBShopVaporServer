@@ -18,4 +18,5 @@ func routes(_ app: Application) throws {
     
     let controller = UserController()
     app.post("register", use: controller.register)
+    app.post("changeUserData", use: controller.changeUserData)
 }

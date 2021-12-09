@@ -7,7 +7,7 @@
 
 import Vapor
 
-struct RegisterResponse: Content {
+struct UserResponse: Content {
     var result: Int
     var userMessage: String?
     var errorMessage: String?
