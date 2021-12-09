@@ -2,14 +2,14 @@ import Vapor
 import Fluent
 
 func routes(_ app: Application) throws {
-    app.get { req -> EventLoopFuture<String> in
+    app.get { req -> String in
         let uu = User.query(on: req.db).all()
         
         let u = uu.map { value in
             value[0].name
         }
         print(u)
-        return u
+        return "It works!"
     }
 
     app.get("hello") { req -> String in

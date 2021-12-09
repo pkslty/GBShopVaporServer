@@ -9,14 +9,15 @@ import Vapor
 
 class UserController {
     func register(_ req: Request) throws -> EventLoopFuture<RegisterResponse> {
-        guard let body = try? req.content.decode(RegisterRequest.self) else {
+        guard let body = try? req.content.decode(User.self) else {
             throw Abort(.badRequest)
         }
             
         print(body)
-        let uu = User.query(on: req.db).all()
-        let result: EventLoopFuture<RegisterResponse> = uu.map { (users: [User]) -> RegisterResponse in
-            let filtered = users.filter {($0.login == body.username) || ($0.email == body.email)}
+        let users = User.query(on: req.db).all()
+        let result: EventLoopFuture<RegisterResponse> = users.map { (users: [User]) -> RegisterResponse in
+            let filtered = users.filter {($0.login == body.login) || ($0.email == body.email)}
+            let lastId = users.sorted(by: {$0.id!  < $1.id!}).last?.id
             var response: RegisterResponse
             if filtered.count == 0 {
                 response = RegisterResponse(
@@ -24,6 +25,9 @@ class UserController {
                     userMessage: "Регистрация прошла успешно!",
                     errorMessage: nil
                 )
+                body.id = lastId! + 1
+                //body.makeMD5Password()
+                body.create(on: req.db)
             }
             else {
                 response = RegisterResponse(
@@ -37,5 +41,5 @@ class UserController {
             
         return result
     }
-
+    
 }
