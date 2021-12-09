@@ -9,11 +9,11 @@ import Foundation
 import Fluent
 import Vapor
 
-final class UUser: Model, Content {
+final class User: Model, Content {
     
     static let schema = "Users"
     
-    @ID(key: .id) var id: Int
+    @ID(custom: "id") var id: Int?
     @Field(key: "login") var login: String
     @Field(key: "name") var name: String
     @Field(key: "lastname") var lastname: String

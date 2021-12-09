@@ -2,13 +2,20 @@ import Vapor
 import Fluent
 
 func routes(_ app: Application) throws {
-    app.get { req -> String in
-        //UUser.query(on: req.db).all()
+    app.get { req -> EventLoopFuture<String> in
+        let uu = User.query(on: req.db).all()
         
-        return "Environment.get("//DATABASE_URL")!
+        let u = uu.map { value in
+            value[0].name
+        }
+        print(u)
+        return u
     }
 
     app.get("hello") { req -> String in
         return "Hello, world!"
     }
+    
+    let controller = UserController()
+    app.post("register", use: controller.register)
 }
