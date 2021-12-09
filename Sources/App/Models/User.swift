@@ -8,7 +8,6 @@
 import Foundation
 import Fluent
 import Vapor
-import CryptoKit
 
 final class User: Model, Content {
     
