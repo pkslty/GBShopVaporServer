@@ -34,7 +34,7 @@ class AuthController {
                                         lastname: user[0].lastname,
                                         email: user[0].email,
                                         gender: user[0].gender,
-                                        creditcard: user[0].creditCard,
+                                        creditCard: user[0].creditCard,
                                         bio: user[0].bio
                 )
                 response = LoginResponse(

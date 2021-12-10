@@ -21,6 +21,6 @@ struct UserData: Content {
     let lastname: String?
     let email: String
     let gender: String?
-    let creditcard: String?
+    let creditCard: String?
     let bio: String?
 }

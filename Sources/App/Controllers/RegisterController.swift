@@ -24,7 +24,7 @@ class UserController {
                     userMessage: "Регистрация прошла успешно!",
                     errorMessage: nil
                 )
-                body.id = lastId! + 1
+                body.id = lastId ?? 0 + 1
                 //body.makeMD5Password()
                 let _ = body.create(on: req.db)
             }
