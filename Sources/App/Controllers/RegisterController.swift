@@ -16,7 +16,6 @@ class UserController {
         let users = User.query(on: req.db).all()
         let result: EventLoopFuture<CommonResponse> = users.map { (users: [User]) -> CommonResponse in
             let filtered = users.filter {($0.login == body.login) || ($0.email == body.email)}
-            let lastId = users.sorted(by: {$0.id!  < $1.id!}).last?.id
             var response: CommonResponse
             if filtered.count == 0 {
                 response = CommonResponse(
@@ -24,8 +23,7 @@ class UserController {
                     userMessage: "Регистрация прошла успешно!",
                     errorMessage: nil
                 )
-                body.id = lastId ?? 0 + 1
-                //body.makeMD5Password()
+                body.id = users.count + 1
                 let _ = body.create(on: req.db)
             }
             else {
