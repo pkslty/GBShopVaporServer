@@ -25,7 +25,7 @@ class GoodsController {
             let response = GoodByIdResponse(result: 1,
                                             productName: filtered[0].productName,
                                             price: filtered[0].price,
-                                            description: filtered[0].description,
+                                            description: filtered[0].productDescription,
                                             errorMessage: nil)
             
             print(response)
