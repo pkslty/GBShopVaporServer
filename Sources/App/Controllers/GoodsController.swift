@@ -6,7 +6,6 @@
 //
 
 import Vapor
-import Foundation
 
 class GoodsController {
     func getGoodById(_ req: Request) throws -> EventLoopFuture<GoodByIdResponse> {

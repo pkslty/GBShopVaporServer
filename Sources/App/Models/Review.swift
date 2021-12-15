@@ -11,7 +11,7 @@ import Vapor
 final class Review: Model, Content {
     
     
-    static let schema = "Products"
+    static let schema = "Reviews"
     
     @ID(custom: "id") var id: Int?
     @Field(key: "productId") var productId: Int
