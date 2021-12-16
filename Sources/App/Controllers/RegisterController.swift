@@ -15,16 +15,7 @@ class UserController {
         }
         print(body)
         
-        if let postgres = req.db as? PostgresDatabase {
-            // The underlying database driver is PostgreSQL.
-            let rows = postgres.simpleQuery("SELECT * FROM public.\"Users\"")
-            
-            rows.map { row in
-                print(row.description)
-            }
-        } else {
-            // The underlying database is _not_ PostgreSQL.
-        }
+        
         
         let users = User.query(on: req.db).all()
         let result: EventLoopFuture<CommonResponse> = users.map { (users: [User]) -> CommonResponse in
