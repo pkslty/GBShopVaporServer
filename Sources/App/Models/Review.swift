@@ -4,7 +4,6 @@
 //
 //  Created by Denis Kuzmin on 15.12.2021.
 //
-
 import Fluent
 import Vapor
 
