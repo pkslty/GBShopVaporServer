@@ -10,16 +10,16 @@ import Vapor
 
 final class User: Model, Content {
     
-    static let schema = "Users"
+    static let schema = "users"
     
     @ID(custom: "id") var id: Int?
     @Field(key: "login") var login: String
     @Field(key: "name") var name: String?
     @Field(key: "lastname") var lastname: String?
-    @Field(key: "passwordMD5") var passwordMD5: String
+    @Field(key: "password_md5") var passwordMD5: String
     @Field(key: "email") var email: String
     @Field(key: "gender") var gender: String?
-    @Field(key: "creditcard") var creditCard: String?
+    @Field(key: "credit_card") var creditCard: String?
     @Field(key: "bio") var bio: String?
     @Field(key: "token") var token: String?
     
