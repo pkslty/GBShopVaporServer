@@ -84,32 +84,47 @@ class ShoppingController {
         return result
     }
     
-    /*func payCart(_ req: Request) throws -> EventLoopFuture<CommonResponse> {
+    func payCart(_ req: Request) throws -> EventLoopFuture<CommonResponse> {
         guard let body = try? req.content.decode(PayCartRequest.self) else {
             throw Abort(.badRequest)
         }
         print(body)
         
-        let cartItems = Cart.query(on: req.db).all()
-        let result: EventLoopFuture<CommonResponse> = cartItems.map { (items: [Cart]) -> CommonResponse in
-            let filtered = reviews.filter { $0.id == body.reviewId }
-            
-            guard filtered.count != 0 else {
-                return CommonResponse(result: 0,
-                                      userMessage: nil,
-                                      errorMessage: "Wrong reviewId")
+        let result = CartItem.query(on: req.db)
+            .filter(\.$userId == body.userId)
+            .all()
+            .map { (items: [CartItem]) -> Bool in
+                //let productId = item.productId
+                //let quantity = item.quantity
+                var b: Bool = false
+                items.forEach { (item: CartItem) -> Void in
+                    let productId = item.productId
+                    Product.query(on: req.db)
+                        .filter(\.$id == productId)
+                        .all()
+                        .map { (product: [Product]) -> Bool in
+                            return product[0].id! >= productId ? true : false
+                        }
+                        .map { b = $0
+                            print("b in closure: \(b)")
+                        }
+                }
+                print("b is \(b)")
+                return b /*Product.query(on: req.db)
+                    .filter(\.$id == productId)
+                    .all()
+                    .map { (products: [Product] -> Bool) in
+                        return products[0].quantity >= quantity ? true : false
+                    }*/
             }
-            
-            let _ = filtered[0].delete(on: req.db)
-            let response = CommonResponse(result: 1,
-                                         userMessage: "Review succesfully removed",
-                                         errorMessage: nil)
-            
-            print(response)
-            return response
-        }
+        print("b out of closure is \(result)")
         
         
-        return result
-    }*/
+        
+        let result1 = CommonResponse(result: 0,
+                                    userMessage: nil,
+                                    errorMessage: "Wrong quantity")
+        
+        return req.eventLoop.makeSucceededFuture(result1)
+    }
 }
