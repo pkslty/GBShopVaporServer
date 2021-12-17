@@ -11,13 +11,13 @@ import Vapor
 final class Product: Model, Content {
     
     
-    static let schema = "Products"
+    static let schema = "products"
     
     @ID(custom: "id") var id: Int?
-    @Field(key: "productName") var productName: String
-    @Field(key: "productDescription") var productDescription: String
-    @Field(key: "categoryId") var categoryId: Int
-    @Field(key: "brandId") var brandId: Int
+    @Field(key: "product_name") var productName: String
+    @Field(key: "product_description") var productDescription: String
+    @Field(key: "category_id") var categoryId: Int
+    @Field(key: "brand_id") var brandId: Int
     @Field(key: "price") var price: Double
     @Field(key: "discount") var discount: Double
     @Field(key: "quantity") var quantity: Int
