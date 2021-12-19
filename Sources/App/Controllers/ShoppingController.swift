@@ -101,6 +101,11 @@ class ShoppingController {
             .filter(CartItem.self, \.$userId == body.userId)
             .all()
             .map { (products: [Product]) -> CommonResponse in
+                guard products.count > 0 else {
+                    return CommonResponse(result: 0,
+                                          userMessage: nil,
+                                          errorMessage: "The Cart is empty")
+                }
                 var canBuyAllItems = true
                 products.forEach { product in
                     do {
