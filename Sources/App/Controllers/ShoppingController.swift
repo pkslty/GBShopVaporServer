@@ -90,41 +90,44 @@ class ShoppingController {
         }
         print(body)
         
-        let result = CartItem.query(on: req.db)
-            .filter(\.$userId == body.userId)
+        let negativeResponse = CommonResponse(result: 0,
+                                              userMessage: nil,
+                                              errorMessage: "Wrong quantity")
+        let positiveResponse = CommonResponse(result: 1,
+                                            userMessage: "Succesfully paid the Cart", errorMessage: nil)
+        
+        let result = Product.query(on: req.db)
+            .join(CartItem.self, on: \Product.$id == \CartItem.$productId)
+            .filter(CartItem.self, \.$userId == body.userId)
             .all()
-            .map { (items: [CartItem]) -> Bool in
-                //let productId = item.productId
-                //let quantity = item.quantity
-                var b: Bool = false
-                items.forEach { (item: CartItem) -> Void in
-                    let productId = item.productId
-                    Product.query(on: req.db)
-                        .filter(\.$id == productId)
-                        .all()
-                        .map { (product: [Product]) -> Bool in
-                            return product[0].id! >= productId ? true : false
-                        }
-                        .map { b = $0
-                            print("b in closure: \(b)")
-                        }
+            .map { (products: [Product]) -> CommonResponse in
+                var canBuyAllItems = true
+                products.forEach { product in
+                    do {
+                        let cart = try product.joined(CartItem.self)
+                        canBuyAllItems = canBuyAllItems && (product.quantity >= cart.quantity)
+                        print("Quantity: \(product.quantity)")
+                        print("Quantity in cart: \(cart.quantity)")
+                    }
+                    catch _ { }
                 }
-                print("b is \(b)")
-                return b /*Product.query(on: req.db)
-                    .filter(\.$id == productId)
-                    .all()
-                    .map { (products: [Product] -> Bool) in
-                        return products[0].quantity >= quantity ? true : false
-                    }*/
+                print(canBuyAllItems)
+                var result: CommonResponse = negativeResponse
+                if canBuyAllItems {
+                    products.forEach { product in
+                        do {
+                            let cart = try product.joined(CartItem.self)
+                            product.quantity -= cart.quantity
+                            let _ = product.update(on: req.db)
+                            let _ = cart.delete(on: req.db)
+                            result = positiveResponse
+                        }
+                        catch _ { }
+                    }
+                }
+                return result
             }
-        print("b out of closure is \(result)")
         
-        
-        
-        let result1 = CommonResponse(result: 0,
-                                    userMessage: nil,
-                                    errorMessage: "Wrong quantity")
-        
-        return req.eventLoop.makeSucceededFuture(result1)
+        return result
     }
 }
