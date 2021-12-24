@@ -34,4 +34,5 @@ func routes(_ app: Application) throws {
     app.post("addToCart", use: shoppingController.addToCart)
     app.post("removeFromCart", use: shoppingController.removeFromCart)
     app.post("payCart", use: shoppingController.payCart)
+    app.post("getUserData", use: userController.getUserInfo)
 }
