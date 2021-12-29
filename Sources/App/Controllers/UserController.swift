@@ -20,8 +20,9 @@ class UserController {
         
         let result: EventLoopFuture<CommonResponse> =
         User.query(on: req.db)
-            .filter(\.$username == body.username)
-            .filter(\.$email == body.email)
+            .group(.or) {
+                $0.filter(\.$username == body.username).filter(\.$email == body.email)
+            }
             .all()
             .map { (users: [User]) -> CommonResponse in
             var response: CommonResponse
@@ -52,6 +53,8 @@ class UserController {
         guard let body = try? req.content.decode(User.self) else {
             throw Abort(.badRequest)
         }
+        
+        print(body)
         
         let result: EventLoopFuture<CommonResponse> =
         User.query(on: req.db)

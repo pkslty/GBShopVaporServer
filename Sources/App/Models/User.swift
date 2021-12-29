@@ -49,6 +49,8 @@ final class User: Model, Content {
         case email
         case gender
         case bio
+        case token
+        case photoUrlString
     }
     
     init(from decoder: Decoder) throws {
@@ -63,6 +65,25 @@ final class User: Model, Content {
         self.gender = try? values.decode(String.self, forKey: .gender)
         self.bio = try? values.decode(String.self, forKey: .bio)
         self.passwordHash = Crypto.MD5(self.passwordHash)
+        self.token = try? values.decode(String.self, forKey: .token)
+        self.photoUrlString = try? values.decode(String.self, forKey: .photoUrlString)
     }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(username, forKey: .username)
+        try container.encode(name, forKey: .name)
+        try container.encode(middleName, forKey: .middleName)
+        try container.encode(lastName, forKey: .lastName)
+        try container.encode(passwordHash, forKey: .password)
+        try container.encode(email, forKey: .email)
+        try container.encode(gender, forKey: .gender)
+        try container.encode(bio, forKey: .bio)
+        try container.encode(token, forKey: .token)
+        try container.encode(photoUrlString, forKey: .photoUrlString)
+        
+            
+        }
     
 }
