@@ -7,6 +7,7 @@
 
 import Vapor
 import FluentPostgresDriver
+import Foundation
 
 class UserController {
     func register(_ req: Request) throws -> EventLoopFuture<CommonResponse> {
@@ -17,17 +18,20 @@ class UserController {
         
         
         
-        let users = User.query(on: req.db).all()
-        let result: EventLoopFuture<CommonResponse> = users.map { (users: [User]) -> CommonResponse in
-            let filtered = users.filter {($0.login == body.login) || ($0.email == body.email)}
+        let result: EventLoopFuture<CommonResponse> =
+        User.query(on: req.db)
+            .filter(\.$username == body.username)
+            .filter(\.$email == body.email)
+            .all()
+            .map { (users: [User]) -> CommonResponse in
             var response: CommonResponse
-            if filtered.count == 0 {
+            if users.count == 0 {
                 response = CommonResponse(
                     result: 1,
-                    userMessage: "Регистрация прошла успешно!",
+                    userMessage: "Succesfully register!",
                     errorMessage: nil
                 )
-                body.id = users.count + 1
+                body.id = UUID()
                 let _ = body.create(on: req.db)
             }
             else {
@@ -48,38 +52,43 @@ class UserController {
         guard let body = try? req.content.decode(User.self) else {
             throw Abort(.badRequest)
         }
-        let users = User.query(on: req.db).all()
-        let result: EventLoopFuture<CommonResponse> = users.map { (users: [User]) -> CommonResponse in
-            guard let user = users.first(where: { $0.id == body.id }) else {
-                return CommonResponse(
-                    result: 0,
-                    userMessage: nil,
-                    errorMessage: "No such user"
-                )
+        
+        let result: EventLoopFuture<CommonResponse> =
+        User.query(on: req.db)
+            .group(.or) {
+                $0.filter(\.$token == body.token).filter(\.$username == body.username).filter(\.$email == body.email)
             }
-            let filtered = users.filter {($0.login == body.login) || ($0.email == body.email)}
-            var response: CommonResponse
-            if filtered.count == 1 && filtered[0].id == body.id {
+            .all()
+            .map { (users: [User]) -> CommonResponse in
+                if users.count == 0 {
+                    return CommonResponse(
+                        result: 0,
+                        userMessage: nil,
+                        errorMessage: "No such user"
+                    )
+                }
+                if users.count > 1 {
+                    return CommonResponse(
+                        result: 0,
+                        userMessage: nil,
+                        errorMessage: "username or email already exists"
+                    )
+                }
+                let user = users[0]
+                var response: CommonResponse
                 response = CommonResponse(
                     result: 1,
                     userMessage: "Succesfully changed user data!",
                     errorMessage: nil
                 )
-                user.creditCard = body.creditCard
                 user.bio = body.bio
                 user.gender = body.gender
                 user.email = body.email
                 user.name = body.name
-                user.lastname = body.lastname
+                user.middleName = body.middleName
+                user.lastName = body.lastName
+                user.photoUrlString = body.photoUrlString
                 let _ = user.update(on: req.db)
-            }
-            else {
-                response = CommonResponse(
-                    result: 0,
-                    userMessage: nil,
-                    errorMessage: "Error: username or e-mail already exists"
-                )
-            }
             return response
         }
             
@@ -101,22 +110,14 @@ class UserController {
                 return LoginResponse(
                             result: 0,
                             user: nil,
-                            token: body.token,
                             errorMessage: "More than one user for token"
                 )
             }
             var response: LoginResponse
             let user = users[0]
+            user.passwordHash = String()
             response = LoginResponse(result: 1,
-                                     user: UserData(id: user.id!,
-                                                    login: user.login,
-                                                    name: user.name,
-                                                    lastname: user.lastname,
-                                                    email: user.email,
-                                                    gender: user.gender,
-                                                    creditCard: user.creditCard,
-                                                    bio: user.bio),
-                                     token: user.token,
+                                     user: user,
                                      errorMessage: nil)
             return response
         }

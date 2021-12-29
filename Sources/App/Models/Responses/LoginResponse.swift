@@ -9,8 +9,7 @@ import Vapor
 
 struct LoginResponse: Content {
     let result: Int
-    let user: UserData?
-    let token: String?
+    let user: User?
     let errorMessage: String?
 }
 

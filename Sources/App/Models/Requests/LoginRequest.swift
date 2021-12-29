@@ -8,6 +8,6 @@
 import Vapor
 
 struct LoginRequest: Content {
-    let login: String
+    let username: String
     let password: String
 }

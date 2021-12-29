@@ -8,5 +8,5 @@
 import Vapor
 
 struct LogoutRequest: Content {
-    let id: Int
+    let token: String
 }
