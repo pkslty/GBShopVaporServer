@@ -3,17 +3,11 @@ import Fluent
 
 func routes(_ app: Application) throws {
     app.get { req -> String in
-        let uu = User.query(on: req.db).all()
-        
-        let u = uu.map { value in
-            value[0].name
-        }
-        print(u)
-        return "It works!"
+        return "Vapor Backend for GeekBrains GBShop project"
     }
 
     app.get("hello") { req -> String in
-        return "Hello, world!"
+        return "Hello!"
     }
     
     let userController = UserController()
