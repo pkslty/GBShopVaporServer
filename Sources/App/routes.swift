@@ -12,7 +12,7 @@ func routes(_ app: Application) throws {
     
     let userController = UserController()
     let authController = AuthController()
-    let goodsController = GoodsController()
+    let productsController = ProductsController()
     let reviewsController = ReviewsController()
     let shoppingController = ShoppingController()
     
@@ -20,8 +20,8 @@ func routes(_ app: Application) throws {
     app.post("changeUserData", use: userController.changeUserData)
     app.post("login", use: authController.login)
     app.post("logout", use: authController.logout)
-    app.post("getGoodsList", use: goodsController.getGoodsList)
-    app.post("getGoodById", use: goodsController.getGoodById)
+    app.post("getProductsList", use: productsController.getProductsList)
+    app.post("getProductById", use: productsController.getProductById)
     app.post("getReviews", use: reviewsController.getReviews)
     app.post("addReview", use: reviewsController.addReview)
     app.post("removeReview", use: reviewsController.removeReview)

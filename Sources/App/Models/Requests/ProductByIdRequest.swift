@@ -7,6 +7,6 @@
 
 import Vapor
 
-struct GoodByIdRequest: Content {
+struct ProductByIdRequest: Content {
     let productId: Int
 }

@@ -7,10 +7,10 @@
 
 import Vapor
 
-struct GoodsListResponse: Content {
+struct ProductsListResponse: Content {
     let result: Int
     let pageNumber: Int?
-    let products: [GoodsListItem]?
+    let products: [ProductsListItem]?
     let errorMessage: String?
 }
 

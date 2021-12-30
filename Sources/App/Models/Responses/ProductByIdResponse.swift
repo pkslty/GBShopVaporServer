@@ -8,7 +8,7 @@
 import Foundation
 import Vapor
 
-struct GoodByIdResponse: Content {
+struct ProductByIdResponse: Content {
     let result: Int
     let productName: String?
     let price: Double?

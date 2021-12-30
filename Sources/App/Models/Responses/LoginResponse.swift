@@ -13,13 +13,3 @@ struct LoginResponse: Content {
     let errorMessage: String?
 }
 
-struct UserData: Content {
-    let id: Int
-    let login: String
-    let name: String?
-    let lastname: String?
-    let email: String
-    let gender: String?
-    let creditCard: String?
-    let bio: String?
-}

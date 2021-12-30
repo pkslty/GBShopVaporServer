@@ -7,7 +7,7 @@
 
 import Vapor
 
-struct GoodsListRequest: Content {
+struct ProductsListRequest: Content {
     let pageNumber: Int
     let categoryId: Int
 }
