@@ -6,7 +6,8 @@
 //
 
 import Vapor
+import Foundation
 
 struct GetReviewsRequest: Content {
-    let productId: Int
+    let productId: UUID
 }

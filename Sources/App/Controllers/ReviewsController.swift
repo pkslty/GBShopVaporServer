@@ -6,6 +6,7 @@
 //
 
 import Vapor
+import Foundation
 
 class ReviewsController {
     func getReviews(_ req: Request) throws -> EventLoopFuture<GetReviewsResponse> {
@@ -42,7 +43,7 @@ class ReviewsController {
                                       userMessage: nil,
                                       errorMessage: "User already post a review")
             }
-            let review = Review(id: reviews.count + 1,
+            let review = Review(id: UUID(),
                                 productId: body.productId,
                                 userId: body.userId,
                                 text: body.text,

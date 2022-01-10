@@ -6,15 +6,16 @@
 //
 import Fluent
 import Vapor
+import Foundation
 
 final class Review: Model, Content {
     
     
     static let schema = "reviews"
     
-    @ID(custom: "id") var id: Int?
-    @Field(key: "product_id") var productId: Int
-    @Field(key: "user_id") var userId: Int
+    @ID(key: .id) var id: UUID?
+    @Field(key: "product_id") var productId: UUID
+    @Field(key: "user_id") var userId: UUID
     @Field(key: "text") var text: String
     @Field(key: "rating") var rating: Int
     @Field(key: "likes") var likes: Int
@@ -22,7 +23,7 @@ final class Review: Model, Content {
     
     init() { }
     
-    init(id: Int, productId: Int, userId: Int, text: String, rating: Int, likes: Int) {
+    init(id: UUID, productId: UUID, userId: UUID, text: String, rating: Int, likes: Int) {
         self.id = id
         self.productId = productId
         self.userId = userId

@@ -6,7 +6,8 @@
 //
 
 import Vapor
+import Foundation
 
 struct RemoveReviewRequest: Content {
-    let reviewId: Int
+    let reviewId: UUID
 }
