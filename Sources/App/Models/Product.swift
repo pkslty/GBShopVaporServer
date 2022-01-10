@@ -53,5 +53,19 @@ final class Product: Model, Content {
         case rating
     }
     
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(productName, forKey: .productName)
+        try container.encode(productDescription, forKey: .productDescription)
+        try container.encode(categoryId, forKey: .categoryId)
+        try container.encode(brandId, forKey: .brandId)
+        try container.encode(price, forKey: .price)
+        try container.encode(discount, forKey: .discount)
+        try container.encode(quantity, forKey: .quantity)
+        try container.encode(reserv, forKey: .reserv)
+        try container.encode(rating, forKey: .rating)
+    }
+    
 }
 

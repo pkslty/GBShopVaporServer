@@ -84,8 +84,6 @@ final class User: Model, Content {
         try container.encode(bio, forKey: .bio)
         try container.encode(token, forKey: .token)
         try container.encode(photoUrlString, forKey: .photoUrlString)
-        
-            
-        }
+    }
     
 }

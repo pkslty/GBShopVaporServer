@@ -45,7 +45,7 @@ class ProductsController {
         let goods = Product.query(on: req.db).all()
         let result: EventLoopFuture<ProductsListResponse> = goods.map { (goods: [Product]) -> ProductsListResponse in
             let filtered = goods.filter { $0.categoryId == body.categoryId }
-                .map { ProductsListItem(productId: $0.id!, productName: $0.productName, price: $0.price) }
+                //.map { ProductsListItem(productId: $0.id!, productName: $0.productName, price: $0.price) }
             guard filtered.count > 0 else {
                 return ProductsListResponse(result: 0, pageNumber: nil, products: nil, errorMessage: "No goods with such category Id")
             }
