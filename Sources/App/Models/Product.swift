@@ -7,13 +7,14 @@
 
 import Fluent
 import Vapor
+import Foundation
 
 final class Product: Model, Content {
     
     
     static let schema = "products"
     
-    @ID(custom: "id") var id: Int?
+    @ID(key: .id) var id: UUID?
     @Field(key: "product_name") var productName: String
     @Field(key: "product_description") var productDescription: String
     @Field(key: "category_id") var categoryId: Int
