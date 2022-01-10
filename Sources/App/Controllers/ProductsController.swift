@@ -7,7 +7,6 @@
 
 import Vapor
 import Fluent
-import os
 
 class ProductsController {
     func getProductById(_ req: Request) throws -> EventLoopFuture<ProductByIdResponse> {
