@@ -1,5 +1,6 @@
 import Vapor
 import Fluent
+import os
 
 func routes(_ app: Application) throws {
     app.get { req -> String in
@@ -20,8 +21,12 @@ func routes(_ app: Application) throws {
     app.post("changeUserData", use: userController.changeUserData)
     app.post("login", use: authController.login)
     app.post("logout", use: authController.logout)
+
     app.post("getProductsList", use: productsController.getProductsList)
     app.post("getProductById", use: productsController.getProductById)
+    app.get("getCategories", use: productsController.getCategories)
+    app.get("getBrands", use: productsController.getBrands)
+    
     app.post("getReviews", use: reviewsController.getReviews)
     app.post("addReview", use: reviewsController.addReview)
     app.post("removeReview", use: reviewsController.removeReview)

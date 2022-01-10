@@ -6,6 +6,8 @@
 //
 
 import Vapor
+import Fluent
+import os
 
 class ProductsController {
     func getProductById(_ req: Request) throws -> EventLoopFuture<ProductByIdResponse> {
@@ -61,4 +63,51 @@ class ProductsController {
         return result
     }
     
+    func getCategories(_ req: Request) throws -> EventLoopFuture<GetListResponse<Category>> {
+
+        return Category.query(on: req.db)
+            .all()
+            .map { (list: [Category]) -> GetListResponse in
+            guard list.count > 0 else {
+                return GetListResponse(result: 0,
+                                       items: nil,
+                                       errorMessage: "No items")
+            }
+            return GetListResponse(result: 1,
+                                   items: list,
+                                   errorMessage: nil)
+        }
+    }
+    
+    func getBrands(_ req: Request) throws -> EventLoopFuture<GetListResponse<Brand>> {
+
+        return Brand.query(on: req.db)
+            .all()
+            .map { (list: [Brand]) -> GetListResponse in
+            guard list.count > 0 else {
+                return GetListResponse(result: 0,
+                                       items: nil,
+                                       errorMessage: "No items")
+            }
+            return GetListResponse(result: 1,
+                                   items: list,
+                                   errorMessage: nil)
+        }
+    }
+    
+    func getList<List: Model>(_ req: Request) throws -> EventLoopFuture<GetListResponse<List>> {
+
+        return List.query(on: req.db)
+            .all()
+            .map { (list: [List]) -> GetListResponse in
+            guard list.count > 0 else {
+                return GetListResponse(result: 0,
+                                       items: nil,
+                                       errorMessage: "No items")
+            }
+            return GetListResponse(result: 1,
+                                   items: list,
+                                   errorMessage: nil)
+        }
+    }
 }

@@ -18,7 +18,7 @@ final class User: Model, Content {
     @Field(key: "name") var name: String?
     @Field(key: "middle_name") var middleName: String?
     @Field(key: "last_name") var lastName: String?
-    @Field(key: "password_hash") var passwordHash: String
+    @Field(key: "password_hash") var passwordHash: String?
     @Field(key: "email") var email: String
     @Field(key: "gender") var gender: String?
     @Field(key: "credit_card_id") var creditCardId: UUID?
@@ -45,7 +45,7 @@ final class User: Model, Content {
         case name
         case middleName
         case lastName
-        case password
+        case passwordHash = "password"
         case email
         case gender
         case bio
@@ -60,11 +60,13 @@ final class User: Model, Content {
         self.name = try? values.decode(String.self, forKey: .name)
         self.middleName = try? values.decode(String.self, forKey: .middleName)
         self.lastName = try? values.decode(String.self, forKey: .lastName)
-        self.passwordHash = try values.decode(String.self, forKey: .password)
+        self.passwordHash = try? values.decode(String.self, forKey: .passwordHash)
         self.email = try values.decode(String.self, forKey: .email)
         self.gender = try? values.decode(String.self, forKey: .gender)
         self.bio = try? values.decode(String.self, forKey: .bio)
-        self.passwordHash = Crypto.MD5(self.passwordHash)
+        if let passwordHash = self.passwordHash {
+            self.passwordHash = Crypto.MD5(passwordHash)
+        }
         self.token = try? values.decode(String.self, forKey: .token)
         self.photoUrlString = try? values.decode(String.self, forKey: .photoUrlString)
     }
@@ -76,7 +78,7 @@ final class User: Model, Content {
         try container.encode(name, forKey: .name)
         try container.encode(middleName, forKey: .middleName)
         try container.encode(lastName, forKey: .lastName)
-        try container.encode(passwordHash, forKey: .password)
+        try container.encode(passwordHash, forKey: .passwordHash)
         try container.encode(email, forKey: .email)
         try container.encode(gender, forKey: .gender)
         try container.encode(bio, forKey: .bio)

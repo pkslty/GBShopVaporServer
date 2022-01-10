@@ -53,7 +53,7 @@ class UserController {
         guard let body = try? req.content.decode(User.self) else {
             throw Abort(.badRequest)
         }
-        
+        print("Request:")
         print(body)
         
         let result: EventLoopFuture<CommonResponse> =
@@ -64,18 +64,24 @@ class UserController {
             .all()
             .map { (users: [User]) -> CommonResponse in
                 if users.count == 0 {
-                    return CommonResponse(
+                    let response = CommonResponse(
                         result: 0,
                         userMessage: nil,
                         errorMessage: "No such user"
                     )
+                    
+                    print("Response:\n\(response)")
+                    return response
                 }
                 if users.count > 1 {
-                    return CommonResponse(
+                    let response = CommonResponse(
                         result: 0,
                         userMessage: nil,
                         errorMessage: "username or email already exists"
                     )
+                    
+                    print("Response:\n\(response)")
+                    return response
                 }
                 let user = users[0]
                 var response: CommonResponse
@@ -91,8 +97,11 @@ class UserController {
                 user.middleName = body.middleName
                 user.lastName = body.lastName
                 user.photoUrlString = body.photoUrlString
+                user.passwordHash = body.passwordHash == nil ? user.passwordHash : body.passwordHash
                 let _ = user.update(on: req.db)
-            return response
+                
+                print("Response:\n \(response)")
+                return response
         }
             
         return result
