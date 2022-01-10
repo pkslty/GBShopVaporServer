@@ -6,8 +6,9 @@
 //
 
 import Vapor
+import Foundation
 
 struct ProductsListRequest: Content {
     let pageNumber: Int
-    let categoryId: Int
+    let categoryId: UUID
 }

@@ -6,9 +6,10 @@
 //
 
 import Vapor
+import Foundation
 
 struct ProductsListItem: Codable {
-    let productId: Int
+    let productId: UUID
     let productName: String
     let price: Double
 }

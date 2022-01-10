@@ -6,6 +6,7 @@
 //
 import Fluent
 import Vapor
+import Foundation
 
 final class CartItem: Model, Content {
     
@@ -13,14 +14,14 @@ final class CartItem: Model, Content {
     static let schema = "cart"
     
     @ID(key: .id) var id: UUID?
-    @Field(key: "product_id") var productId: Int
-    @Field(key: "user_id") var userId: Int
+    @Field(key: "product_id") var productId: UUID
+    @Field(key: "user_id") var userId: UUID
     @Field(key: "quantity") var quantity: Int
     
     
     init() { }
     
-    init(id: UUID? = nil, productId: Int, userId: Int, quantity: Int) {
+    init(id: UUID? = nil, productId: UUID, userId: UUID, quantity: Int) {
         self.id = id
         self.productId = productId
         self.userId = userId

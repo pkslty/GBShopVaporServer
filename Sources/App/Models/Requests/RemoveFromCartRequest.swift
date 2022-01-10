@@ -6,9 +6,10 @@
 //
 
 import Vapor
+import Foundation
 
 struct RemoveFromCartRequest: Content {
-    let productId: Int
-    let userId: Int
+    let productId: UUID
+    let userId: UUID
     let quantity: Int?
 }

@@ -6,7 +6,8 @@
 //
 
 import Vapor
+import Foundation
 
 struct PayCartRequest: Content {
-    let userId: Int
+    let userId: UUID
 }
