@@ -1,6 +1,5 @@
 import Vapor
 import Fluent
-import os
 
 func routes(_ app: Application) throws {
     app.get { req -> String in
