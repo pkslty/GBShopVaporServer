@@ -78,6 +78,38 @@ class ProductsController {
         }
     }
     
+    func getBrandCategories(_ req: Request) throws -> EventLoopFuture<GetListResponse<Category>> {
+        guard let body = try? req.content.decode(GetBrandCategories.self) else {
+            throw Abort(.badRequest)
+        }
+        print(body)
+        
+        return Product.query(on: req.db)
+            .join(Category.self, on: \Product.$categoryId == \Category.$id)
+            .filter(\.$brandId == body.brandId)
+            .all()
+            .map { (products: [Product]) -> GetListResponse in
+            guard products.count > 0 else {
+                return GetListResponse(result: 0,
+                                       items: nil,
+                                       errorMessage: "No items")
+            }
+            let categories = products.compactMap { (product) -> Category? in
+                return try? product.joined(Category.self)
+            }
+            guard categories.count > 0 else {
+                return GetListResponse(result: 0,
+                                       items: nil,
+                                       errorMessage: "No items")
+            }
+            
+                
+            return GetListResponse(result: 1,
+                                   items: categories.unsortedUniqueElements(),
+                                   errorMessage: nil)
+        }
+    }
+    
     func getBrands(_ req: Request) throws -> EventLoopFuture<GetListResponse<Brand>> {
 
         return Brand.query(on: req.db)

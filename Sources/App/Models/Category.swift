@@ -9,7 +9,7 @@ import Fluent
 import Vapor
 import Foundation
 
-final class Category: Model, Content {
+final class Category: Model, Content, Equatable, Hashable {
     
     
     static let schema = "categories"
@@ -26,5 +26,14 @@ final class Category: Model, Content {
         self.description = description
     }
     
+    static func == (lhs: Category, rhs: Category) -> Bool {
+        let r = lhs.id == rhs.id
+        print(r)
+        return r
+    }
     
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+    }
 }
+
