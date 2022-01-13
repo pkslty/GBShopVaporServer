@@ -26,6 +26,7 @@ func routes(_ app: Application) throws {
     app.get("getCategories", use: productsController.getCategories)
     app.get("getBrands", use: productsController.getBrands)
     app.post("getBrandCategories", use: productsController.getBrandCategories)
+    app.post("getBrandById", use: productsController.getBrandById)
     
     app.post("getReviews", use: reviewsController.getReviews)
     app.post("addReview", use: reviewsController.addReview)

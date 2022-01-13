@@ -27,9 +27,7 @@ final class Category: Model, Content, Equatable, Hashable {
     }
     
     static func == (lhs: Category, rhs: Category) -> Bool {
-        let r = lhs.id == rhs.id
-        print(r)
-        return r
+        return lhs.id == rhs.id
     }
     
     func hash(into hasher: inout Hasher) {

@@ -8,6 +8,6 @@
 import Vapor
 import Foundation
 
-struct ProductByIdRequest: Content {
-    let productId: UUID
+struct RecordByIdRequest: Content {
+    let id: UUID
 }

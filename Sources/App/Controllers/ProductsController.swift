@@ -10,14 +10,14 @@ import Fluent
 
 class ProductsController {
     func getProductById(_ req: Request) throws -> EventLoopFuture<ProductByIdResponse> {
-        guard let body = try? req.content.decode(ProductByIdRequest.self) else {
+        guard let body = try? req.content.decode(RecordByIdRequest.self) else {
             throw Abort(.badRequest)
         }
         print(body)
         
         let goods = Product.query(on: req.db).all()
         let result: EventLoopFuture<ProductByIdResponse> = goods.map { (goods: [Product]) -> ProductByIdResponse in
-            let filtered = goods.filter { $0.id == body.productId }
+            let filtered = goods.filter { $0.id == body.id }
 
             guard filtered.count == 1 else {
                 return ProductByIdResponse(result: 0, productName: nil, price: nil, description: nil, errorMessage: "No such product")
@@ -34,6 +34,27 @@ class ProductsController {
         
         
         return result
+    }
+    
+    func getBrandById(_ req: Request) throws -> EventLoopFuture<BrandByIdResponse> {
+        guard let body = try? req.content.decode(RecordByIdRequest.self) else {
+            throw Abort(.badRequest)
+        }
+        print(body)
+        
+        return Brand.query(on: req.db)
+            .filter(\.$id == body.id)
+            .all()
+            .map { (brands: [Brand]) -> BrandByIdResponse in
+                guard brands.count == 1 else {
+                    return BrandByIdResponse(result: 0,
+                                             brand: nil,
+                                             errorMessage: "No such Brand")
+                }
+                return BrandByIdResponse(result: 1,
+                                         brand: brands[0],
+                                         errorMessage: nil)
+            }
     }
     
     func getProductsList(_ req: Request) throws -> EventLoopFuture<ProductsListResponse> {
