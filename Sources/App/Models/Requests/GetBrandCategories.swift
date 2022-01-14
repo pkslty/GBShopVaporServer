@@ -9,5 +9,5 @@ import Vapor
 import Foundation
 
 struct GetBrandCategories: Content {
-    let brandId: UUID
+    let id: UUID
 }

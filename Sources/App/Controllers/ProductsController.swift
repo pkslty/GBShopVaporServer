@@ -107,7 +107,7 @@ class ProductsController {
         
         return Product.query(on: req.db)
             .join(Category.self, on: \Product.$categoryId == \Category.$id)
-            .filter(\.$brandId == body.brandId)
+            .filter(\.$brandId == body.id)
             .all()
             .map { (products: [Product]) -> GetListResponse in
             guard products.count > 0 else {
