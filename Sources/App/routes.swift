@@ -3,7 +3,11 @@ import Fluent
 
 func routes(_ app: Application) throws {
     app.get { req -> String in
-        return "Vapor Backend for GeekBrains GBShop project"
+        if let dburl = dburl {
+            return dburl
+        } else {
+            return "Vapor Backend for GeekBrains GBShop project"
+        }
     }
 
     app.get("hello") { req -> String in
