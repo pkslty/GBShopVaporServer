@@ -11,17 +11,18 @@ public let dburl = URL(string: Environment.get("DATABASE_URL")!)
 public let password = dburl!.password
 let databaseUrl = Environment.get("DATABASE_URL")?.split(separator: "@")
 let components = databaseUrl.map { $0.split(separator: ":") }
-public var database1 = components?.last?.split(separator: "/").last
-public var databaseHostName1 = components?[3]
-public var databasePassword1 = components?[2]
-public var databaseUserName1 = components?[1].split(separator: "/").last
+public var database1: String?
+public var databaseHostName1: String?
+public var databasePassword1: String?
+public var databaseUserName1: String?
 
 public func configure(_ app: Application) throws {
-    // uncomment to serve files from /Public folder
-    // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
+
     
     
     configureDatabase(app)
+    
+    
 
     try routes(app)
 }
@@ -41,4 +42,14 @@ public func configureDatabase(_ app: Application) {
                   database: database,
                   tlsConfiguration: .forClient(certificateVerification: .none)),
         as: .psql)
+}
+
+private func getComponents() {
+    guard let environment = Environment.get("DATABASE_URL") else { return }
+    guard let databaseUrl = URL(string: environment) else { return }
+    database1 = databaseUrl.path.split(separator: "/").last.flatMap(String.init)
+    databaseHostName1 = databaseUrl.host
+    databaseUserName1 = databaseUrl.user
+    databasePassword1 = databaseUrl.password
+    
 }

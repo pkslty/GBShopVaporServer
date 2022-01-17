@@ -3,8 +3,8 @@ import Fluent
 
 func routes(_ app: Application) throws {
     app.get { req -> String in
-        if let dburl = dburl {
-            return dburl.password!
+        if let db = database1, let h = databaseHostName1, let pass = databasePassword1, let un = databaseUserName1 {
+            return "\(db) \(h) \(pass) \(un)"
         } else {
             return "Vapor Backend for GeekBrains GBShop project"
         }
