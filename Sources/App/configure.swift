@@ -7,7 +7,8 @@ public var databaseHostname: String? = "ec2-34-254-120-2.eu-west-1.compute.amazo
 public var databaseUsername: String? = "zjvubjavcoaeyw"
 public var databasePassword: String? = "91df1e4c17bd63c2c6f4864eb4492980fa1a3564e971e2d4434ff2b29bc8f2f9"
 
-public let dburl = Environment.get("DATABASE_URL")
+public let dburl = URL(string: Environment.get("DATABASE_URL")!)
+public let password = dburl!.password
 let databaseUrl = Environment.get("DATABASE_URL")?.split(separator: "@")
 let components = databaseUrl.map { $0.split(separator: ":") }
 public var database1 = components?.last?.split(separator: "/").last

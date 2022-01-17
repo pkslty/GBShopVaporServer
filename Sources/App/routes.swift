@@ -4,7 +4,7 @@ import Fluent
 func routes(_ app: Application) throws {
     app.get { req -> String in
         if let dburl = dburl {
-            return dburl
+            return dburl.password!
         } else {
             return "Vapor Backend for GeekBrains GBShop project"
         }
