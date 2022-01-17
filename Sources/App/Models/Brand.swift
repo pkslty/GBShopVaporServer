@@ -25,6 +25,4 @@ final class Brand: Model, Content {
         self.name = name
         self.description = description
     }
-    
-    
 }

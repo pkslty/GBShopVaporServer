@@ -162,4 +162,26 @@ class ProductsController {
                                    errorMessage: nil)
         }
     }
+    
+    func getProductPhotos(_ req: Request) throws -> EventLoopFuture<ProductPhotosResponse> {
+        guard let body = try? req.content.decode(RecordByIdRequest.self) else {
+            throw Abort(.badRequest)
+        }
+        print(body)
+        
+        return ProductPhoto.query(on: req.db)
+            .filter(\.$productId == body.id)
+            .all()
+            .map { (photos: [ProductPhoto]) -> ProductPhotosResponse in
+                guard photos.count > 0 else {
+                    return ProductPhotosResponse(result: 0,
+                                                 photos: nil,
+                                                 errorMessage: "No photos")
+                }
+                let photosResponse = photos.map { ProductPhotoResponse(urlString: $0.urlString)}
+                return ProductPhotosResponse(result: 1,
+                                             photos: photosResponse,
+                                             errorMessage: nil)
+            }
+    }
 }
