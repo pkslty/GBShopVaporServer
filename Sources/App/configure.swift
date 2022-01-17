@@ -21,7 +21,7 @@ public func configure(_ app: Application) throws {
     
     
     configureDatabase(app)
-    
+    getComponents()
     
 
     try routes(app)
