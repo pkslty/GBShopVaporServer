@@ -6,6 +6,7 @@
 //
 
 import Vapor
+import Fluent
 import Foundation
 
 class ReviewsController {
@@ -89,5 +90,27 @@ class ReviewsController {
         
         
         return result
+    }
+    
+    func getReviewPhotos(_ req: Request) throws -> EventLoopFuture<PhotosResponse> {
+        guard let body = try? req.content.decode(GetReviewPhotosRequest.self) else {
+            throw Abort(.badRequest)
+        }
+        print(body)
+        
+        return ReviewPhoto.query(on: req.db)
+            .filter(\.$reviewId == body.id)
+            .all()
+            .map { (photos: [ReviewPhoto]) -> PhotosResponse in
+                guard photos.count > 0 else {
+                    return PhotosResponse(result: 0,
+                                          photos: nil,
+                                          errorMessage: "No photos")
+                }
+                let photosResponse = photos.map {PhotoResponse(urlString: $0.urlString)}
+                return PhotosResponse(result: 1,
+                                      photos: photosResponse,
+                                      errorMessage: nil)
+            }
     }
 }

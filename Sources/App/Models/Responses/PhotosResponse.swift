@@ -7,12 +7,12 @@
 
 import Vapor
 
-struct ProductPhotosResponse: Content {
+struct PhotosResponse: Content {
     let result: Int
-    let photos: [ProductPhotoResponse]?
+    let photos: [PhotoResponse]?
     let errorMessage: String?
 }
 
-struct ProductPhotoResponse: Content {
+struct PhotoResponse: Content {
     let urlString: String
 }

@@ -163,7 +163,7 @@ class ProductsController {
         }
     }
     
-    func getProductPhotos(_ req: Request) throws -> EventLoopFuture<ProductPhotosResponse> {
+    func getProductPhotos(_ req: Request) throws -> EventLoopFuture<PhotosResponse> {
         guard let body = try? req.content.decode(RecordByIdRequest.self) else {
             throw Abort(.badRequest)
         }
@@ -172,14 +172,14 @@ class ProductsController {
         return ProductPhoto.query(on: req.db)
             .filter(\.$productId == body.id)
             .all()
-            .map { (photos: [ProductPhoto]) -> ProductPhotosResponse in
+            .map { (photos: [ProductPhoto]) -> PhotosResponse in
                 guard photos.count > 0 else {
-                    return ProductPhotosResponse(result: 0,
+                    return PhotosResponse(result: 0,
                                                  photos: nil,
                                                  errorMessage: "No photos")
                 }
-                let photosResponse = photos.map { ProductPhotoResponse(urlString: $0.urlString)}
-                return ProductPhotosResponse(result: 1,
+                let photosResponse = photos.map { PhotoResponse(urlString: $0.urlString)}
+                return PhotosResponse(result: 1,
                                              photos: photosResponse,
                                              errorMessage: nil)
             }
